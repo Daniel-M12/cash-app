@@ -10,7 +10,7 @@
       </Resume>
     </template>
     <template #movements>
-      <Movements />
+      <Movements :movements="movements" />
     </template>
   </Layout>
 </template>
@@ -19,8 +19,30 @@
 import Layout from './Layout.vue'
 import Header from './Header.vue'
 import Resume from './resume/Index.vue'
-import Movements from './Movements.vue'
+import Movements from './movements/Index.vue'
+import type MovementClass from '@/common/model/movement.model'
 
 const label: string | null = 'Etiqueta'
-let amount: number | null = 1001
+const amount: number | null = 1001
+
+const movements: MovementClass[] = [
+  {
+    id: 1,
+    title: 'Move 1',
+    description: 'Lorem ipsum',
+    amount: 1000,
+  },
+  {
+    id: 2,
+    title: 'Move 2',
+    description: 'Lorem ipsum dolor',
+    amount: 100,
+  },
+  {
+    id: 3,
+    title: 'Move 3',
+    description: 'Lorem ipsum dolor',
+    amount: 300,
+  },
+]
 </script>

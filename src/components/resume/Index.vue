@@ -26,7 +26,7 @@ const { totalLabel, label, total, amount } = defineProps({
   },
   amount: {
     type: Number,
-    default: null,
+    default: () => null,
   },
 })
 
