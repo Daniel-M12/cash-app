@@ -36,7 +36,7 @@ const movements: MovementClass[] = [
     id: 2,
     title: 'Move 2',
     description: 'Lorem ipsum dolor',
-    amount: 100,
+    amount: -100,
   },
   {
     id: 3,
