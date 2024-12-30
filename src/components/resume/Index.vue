@@ -1,7 +1,13 @@
 <template>
   <main>
     <p>{{ visualLabel }}</p>
-    <h1>{{ visualAmount }}</h1>
+    <h1>{{ amountCurrency }}</h1>
+    <div class="graphic">
+      <slot name="graphic"></slot>
+    </div>
+    <div class="action">
+      <slot name="action"></slot>
+    </div>
   </main>
 </template>
 
@@ -26,6 +32,12 @@ const { totalLabel, label, total, amount } = defineProps({
 
 const visualLabel = computed(() => (label != null ? label : totalLabel))
 const visualAmount = computed(() => (amount != null ? amount : total))
+const amountCurrency = computed(() => currencyFormatter.format(visualAmount.value ?? 0))
+
+const currencyFormatter = new Intl.NumberFormat('es-PE', {
+  style: 'currency',
+  currency: 'PEN',
+})
 </script>
 
 <style scoped>

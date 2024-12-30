@@ -4,7 +4,10 @@
       <Header></Header>
     </template>
     <template #resume>
-      <Resume :total-label="'Ahorro total'" :label="label" :total="100000" :amount="amount" />
+      <Resume :total-label="'Ahorro total'" :label="label" :total="100000" :amount="amount">
+        <template #graphic> graphic </template>
+        <template #action> action </template>
+      </Resume>
     </template>
     <template #movements>
       <Movements />
@@ -19,5 +22,5 @@ import Resume from './resume/Index.vue'
 import Movements from './Movements.vue'
 
 const label: string | null = 'Etiqueta'
-const amount: number | null = 1000
+let amount: number | null = 1001
 </script>
