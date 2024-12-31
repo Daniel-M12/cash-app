@@ -1,7 +1,35 @@
 <template>
   <button @click="showModal = true">Agregar movimiento</button>
   <Teleport defer to="#app">
-    <Modal v-show="showModal" @close="showModal = false">Formulario</Modal>
+    <Modal v-show="showModal" @close="showModal = false">
+      <form @submit.prevent="submit">
+        <div class="field">
+          <label>Título</label>
+          <input type="text" v-model="title" />
+        </div>
+        <div class="field">
+          <label>Monto</label>
+          <input type="number" v-model="amount" />
+        </div>
+        <div class="field">
+          <label>Descripción</label>
+          <textarea rows="4" v-model="description" />
+        </div>
+        <div class="field">
+          <label class="radio-label">
+            <input type="radio" v-model="movementType" value="Ingreso" />
+            <span>Ingreso</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" v-model="movementType" value="Gasto" />
+            <span>Gasto</span>
+          </label>
+        </div>
+        <div class="action">
+          <button>Agregar movimiento</button>
+        </div>
+      </form>
+    </Modal>
   </Teleport>
 </template>
 
@@ -11,6 +39,15 @@ import type { Ref } from 'vue'
 import Modal from './Modal.vue'
 
 const showModal: Ref<boolean> = ref(false)
+const title = ref('')
+const amount = ref(0)
+const description = ref('')
+const movementType = ref('Ingreso')
+
+const submit = () => {
+  console.log(title.value, amount.value, description.value, movementType.value)
+  showModal.value = !showModal.value
+}
 </script>
 
 <style scoped>
