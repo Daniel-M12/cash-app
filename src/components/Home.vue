@@ -6,7 +6,9 @@
     <template #resume>
       <Resume :total-label="'Ahorro total'" :label="label" :total="100000" :amount="amount">
         <template #graphic> graphic </template>
-        <template #action> action </template>
+        <template #action>
+          <Action />
+        </template>
       </Resume>
     </template>
     <template #movements>
@@ -21,6 +23,7 @@ import Header from './Header.vue'
 import Resume from './resume/Index.vue'
 import Movements from './movements/Index.vue'
 import type MovementClass from '@/common/model/movement.model'
+import Action from './Action.vue'
 
 const label: string | null = 'Etiqueta'
 const amount: number | null = 1001
