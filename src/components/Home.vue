@@ -6,7 +6,7 @@
     <template #resume>
       <Resume :total-label="'Ahorro total'" :label="label" :total="100000" :amount="amount">
         <template #graphic>
-          <Graphic />
+          <Graphic :amounts="[100, 200, 500, 200, -400, -600, -300, 0, 300, 500]" />
         </template>
         <template #action>
           <Action />
