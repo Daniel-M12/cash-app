@@ -44,9 +44,17 @@ const amount = ref(0)
 const description = ref('')
 const movementType = ref('Ingreso')
 
+const emit = defineEmits(['create'])
+
 const submit = () => {
-  console.log(title.value, amount.value, description.value, movementType.value)
   showModal.value = !showModal.value
+  emit('create', {
+    title: title.value,
+    description: description.value,
+    amount: movementType.value === 'Ingreso' ? amount.value : -amount.value,
+    date: new Date(),
+    id: Math.round(Math.random() * new Date().getMilliseconds()),
+  })
 }
 </script>
 

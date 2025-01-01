@@ -9,12 +9,12 @@
           <Graphic :amounts="amounts" />
         </template>
         <template #action>
-          <Action />
+          <Action @create="create" />
         </template>
       </Resume>
     </template>
     <template #movements>
-      <Movements :movements="movements" />
+      <Movements :movements="movements" @remove="remove" />
     </template>
   </Layout>
 </template>
@@ -27,16 +27,15 @@ import Movements from './movements/Index.vue'
 import type MovementClass from '@/common/model/movement.model'
 import Action from './Action.vue'
 import Graphic from './resume/Graphic.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const label: string | null = 'Etiqueta'
 const amount: number | null = 1001
 
 const amounts = computed(() => {
-  const lastDaysMovements = movements
+  const lastDaysMovements = movements.value
     .filter((m: MovementClass) => {
       const today: Date = new Date()
-      console.log('today:', today)
       const oldDate: Date = new Date(today.setDate(today.getDate() - 30)) // Create a new Date object
       return m.date > oldDate
     })
@@ -51,7 +50,21 @@ const amounts = computed(() => {
   })
 })
 
-const movements: MovementClass[] = [
+const create = (movement: MovementClass) => {
+  console.log('Create movement:', movement)
+  console.log('movements before', movements)
+  movements.value.push(movement)
+  console.log('movements after', movements)
+}
+
+const remove = (id: number) => {
+  const index = movements.value.findIndex((m) => m.id === id)
+  console.log('movements before', movements)
+  movements.value.splice(index, 1)
+  console.log('movements after', movements)
+}
+
+let movements = ref<MovementClass[]>([
   {
     id: 1,
     title: 'Move 1',
@@ -122,5 +135,5 @@ const movements: MovementClass[] = [
     amount: 300,
     date: new Date('12-09-2024'),
   },
-]
+])
 </script>
