@@ -1,6 +1,6 @@
-# cash-project
+# cash-app
 
-This template should help get you started developing with Vue 3 in Vite.
+My first Vue project. Application for personal cash management
 
 ## Recommended IDE Setup
 
