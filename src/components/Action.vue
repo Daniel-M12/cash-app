@@ -55,6 +55,14 @@ const submit = () => {
     date: new Date(),
     id: Math.round(Math.random() * new Date().getMilliseconds()),
   })
+  cleanform()
+}
+
+function cleanform() {
+  title.value = ''
+  description.value = ''
+  amount.value = 0
+  movementType.value = 'Ingreso'
 }
 </script>
 

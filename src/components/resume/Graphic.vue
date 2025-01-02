@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, ref, toRefs } from 'vue'
+import { computed, defineProps, ref, toRefs, watch } from 'vue'
 
 const props = defineProps({
   amounts: {
@@ -47,11 +47,14 @@ const zero = computed(() => {
 
 const points = computed(() => {
   const total = amounts.value.length
-  return amounts.value.reduce((points, amount, i) => {
-    const x = (300 / total) * (i + 1)
-    const y = amountToPixels(amount)
-    return `${points} ${x},${y}`
-  }, '0,100')
+  return amounts.value.reduce(
+    (points, amount, i) => {
+      const x = (300 / total) * (i + 1)
+      const y = amountToPixels(amount)
+      return `${points} ${x},${y}`
+    },
+    `0, ${amountToPixels(amounts.value.length ? amounts.value[0] : 0)}`,
+  )
 })
 
 const showPointer = ref(false)
@@ -72,6 +75,17 @@ const tap = (event: TouchEvent) => {
 const untap = () => {
   showPointer.value = false
 }
+
+const emit = defineEmits(['select'])
+
+watch(pointer, (pointerValue: number) => {
+  const index = Math.ceil(pointerValue / (300 / amounts.value.length))
+  if (index < 0 || index > amounts.value.length) {
+    return
+  }
+
+  emit('select', amounts.value[index - 1])
+})
 </script>
 
 <style scoped>

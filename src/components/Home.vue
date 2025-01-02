@@ -4,9 +4,9 @@
       <Header></Header>
     </template>
     <template #resume>
-      <Resume :total-label="'Ahorro total'" :label="label" :total="100000" :amount="amount">
+      <Resume :total-label="'Ahorro total'" :label="label" :total="totalAmount" :amount="amount">
         <template #graphic>
-          <Graphic :amounts="amounts" />
+          <Graphic :amounts="amounts" @select="select" />
         </template>
         <template #action>
           <Action @create="create" />
@@ -29,9 +29,13 @@ import Action from './Action.vue'
 import Graphic from './resume/Graphic.vue'
 import { computed, onMounted, ref } from 'vue'
 
+const label: string = 'Etiqueta'
+const amount = ref<number | null>(null)
+const movements = ref<MovementClass[]>([])
+
 onMounted(() => {
   const storedMovements = localStorage.getItem('movements')
-  let parsedMovements: MovementClass[] = storedMovements ? JSON.parse(storedMovements) : []
+  const parsedMovements: MovementClass[] = storedMovements ? JSON.parse(storedMovements) : []
   if (Array.isArray(parsedMovements)) {
     movements.value = parsedMovements?.map((m) => {
       return {
@@ -41,9 +45,6 @@ onMounted(() => {
     })
   }
 })
-
-const label: string | null = 'Etiqueta'
-const amount: number | null = 1001
 
 const amounts = computed(() => {
   const lastDaysMovements = movements.value
@@ -55,13 +56,23 @@ const amounts = computed(() => {
     .map((m: MovementClass) => m.amount)
 
   return lastDaysMovements.map((m, i) => {
-    const lastMovements = lastDaysMovements.slice(0, i)
+    const lastMovements = lastDaysMovements.slice(0, i + 1)
 
     return lastMovements.reduce((sum, movement) => {
       return sum + movement
     }, 0)
   })
 })
+
+const totalAmount = computed(() => {
+  return movements.value.reduce((sum, m) => {
+    return sum + m.amount
+  }, 0)
+})
+
+const select = (el: number) => {
+  amount.value = el
+}
 
 const create = (movement: MovementClass) => {
   console.log('Create movement:', movement)
@@ -82,6 +93,4 @@ const remove = (id: number) => {
 const save = () => {
   localStorage.setItem('movements', JSON.stringify(movements.value))
 }
-
-let movements = ref<MovementClass[]>([])
 </script>
