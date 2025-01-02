@@ -86,19 +86,14 @@ const unselect = () => {
 }
 
 const create = (movement: MovementClass) => {
-  console.log('Create movement:', movement)
-  console.log('movements before', movements)
   movements.value.push(movement)
   save()
-  console.log('movements after', movements)
 }
 
 const remove = (id: number) => {
   const index = movements.value.findIndex((m) => m.id === id)
-  console.log('movements before', movements)
   movements.value.splice(index, 1)
   save()
-  console.log('movements after', movements)
 }
 
 const save = () => {
