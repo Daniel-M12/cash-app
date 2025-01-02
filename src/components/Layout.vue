@@ -1,18 +1,18 @@
 <template>
-  <div class="header">
+  <header class="header">
     <slot name="header"></slot>
-  </div>
-  <div class="resume">
+  </header>
+  <main class="resume">
     <slot name="resume"></slot>
-  </div>
-  <div class="movements">
+  </main>
+  <section class="movements">
     <div class="head" @click="showMovements = !showMovements">
       <div class="grip"></div>
     </div>
     <div class="body" v-show="showMovements">
       <slot name="movements"></slot>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -34,7 +34,9 @@ const showMovements = ref(false)
 
 .header {
   position: fixed;
+  top: 0;
   width: 100vw;
+  background-color: white;
 }
 
 .resume {
@@ -43,12 +45,12 @@ const showMovements = ref(false)
 
 .movements {
   z-index: 1;
-  position: absolute;
+  position: sticky;
   flex-direction: column;
   bottom: 0;
   width: 100vw;
   background-color: white;
-  box-shadow: 0 -8px 16px #e5e5e5;
+  box-shadow: 0 -4px 10px #e5e5e5;
   border-radius: 24px;
 }
 
@@ -56,7 +58,7 @@ const showMovements = ref(false)
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px;
+  padding: 18px;
   width: 100%;
   box-sizing: border-box;
 }
