@@ -34,8 +34,8 @@ import Action from './Action.vue'
 import Graphic from './resume/Graphic.vue'
 import { computed, onMounted, ref } from 'vue'
 
-const label = ref<string | null>(null)
-const amount = ref<number | null>(null)
+const label = ref<string | undefined>(undefined)
+const amount = ref<number | undefined>(undefined)
 const movements = ref<MovementClass[]>([])
 
 onMounted(() => {
@@ -81,8 +81,8 @@ const select = (index: number) => {
 }
 
 const unselect = () => {
-  amount.value = null
-  label.value = null
+  amount.value = undefined
+  label.value = undefined
 }
 
 const create = (movement: MovementClass) => {

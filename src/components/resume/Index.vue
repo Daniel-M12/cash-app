@@ -30,8 +30,8 @@ const { totalLabel, label, total, amount } = defineProps({
   },
 })
 
-const visualLabel = computed(() => (label != null ? label : totalLabel))
-const visualAmount = computed(() => (amount != null ? amount : total))
+const visualLabel = computed(() => (label != undefined ? label : totalLabel))
+const visualAmount = computed(() => (amount != undefined ? amount : total))
 const amountCurrency = computed(() => currencyFormatter.format(visualAmount.value ?? 0))
 
 const currencyFormatter = new Intl.NumberFormat('es-PE', {
