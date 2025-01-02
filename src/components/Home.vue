@@ -4,9 +4,14 @@
       <Header></Header>
     </template>
     <template #resume>
-      <Resume :total-label="'Ahorro total'" :label="label" :total="totalAmount" :amount="amount">
+      <Resume
+        :total-label="'Monto total hasta hoy'"
+        :label="label"
+        :total="totalAmount"
+        :amount="amount"
+      >
         <template #graphic>
-          <Graphic :amounts="amounts" @select="select" />
+          <Graphic :amounts="amounts" @select="select" @unselect="unselect" />
         </template>
         <template #action>
           <Action @create="create" />
@@ -29,7 +34,7 @@ import Action from './Action.vue'
 import Graphic from './resume/Graphic.vue'
 import { computed, onMounted, ref } from 'vue'
 
-const label: string = 'Etiqueta'
+const label = ref<string | null>(null)
 const amount = ref<number | null>(null)
 const movements = ref<MovementClass[]>([])
 
@@ -70,8 +75,14 @@ const totalAmount = computed(() => {
   }, 0)
 })
 
-const select = (el: number) => {
-  amount.value = el
+const select = (index: number) => {
+  amount.value = amounts.value[index - 1]
+  label.value = movements.value[index - 1].date.toDateString()
+}
+
+const unselect = () => {
+  amount.value = null
+  label.value = null
 }
 
 const create = (movement: MovementClass) => {

@@ -72,11 +72,12 @@ const tap = (event: TouchEvent) => {
   pointer.value = graphPixels
 }
 
+const emit = defineEmits(['select', 'unselect'])
+
 const untap = () => {
   showPointer.value = false
+  emit('unselect')
 }
-
-const emit = defineEmits(['select'])
 
 watch(pointer, (pointerValue: number) => {
   const index = Math.ceil(pointerValue / (300 / amounts.value.length))
@@ -84,7 +85,7 @@ watch(pointer, (pointerValue: number) => {
     return
   }
 
-  emit('select', amounts.value[index - 1])
+  emit('select', index)
 })
 </script>
 
