@@ -10,6 +10,7 @@
         :description="movement.description"
         :amount="movement.amount"
         @remove="remove"
+        @edit="edit"
       >
       </Movement>
     </div>
@@ -29,10 +30,16 @@ const props = defineProps({
 
 const { movements } = toRefs(props)
 
-const emit = defineEmits(['remove'])
+const emit = defineEmits(['remove', 'edit'])
 
 const remove = (id: number) => {
+  console.log('Remove en Index')
   emit('remove', id)
+}
+
+const edit = (id: number) => {
+  console.log('Edit en Index')
+  emit('edit', id)
 }
 </script>
 

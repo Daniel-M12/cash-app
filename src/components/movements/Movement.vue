@@ -1,18 +1,34 @@
 <template>
-  <div class="movement">
+  <div v-show="!showEdit" class="movement">
     <div>
-      <h4>{{ title }}</h4>
-      <p>{{ description }}</p>
+      <h4>{{ pasedProps.title }}</h4>
+      <p>{{ pasedProps.description }}</p>
     </div>
     <div class="action">
-      <img @click="remove" src="@/assets/trash-icon.svg" alt="Borrar" />
-      <p :class="[{ red: isNegative, green: !isNegative }]">{{ amountCurrency }}</p>
+      <div class="flex flex-row justify-between w-16 pb-2">
+        <img @click="edit" src="@/assets/pencil-icon.svg" alt="Editar" />
+        <img @click="remove" src="@/assets/trash-icon.svg" alt="Borrar" />
+      </div>
+      <p :class="[{ red: isNegative, green: !isNegative }]">
+        {{ amountCurrency }}
+      </p>
     </div>
   </div>
+  <EditMove
+    :title="props.title"
+    :description="props.description"
+    :amount="props.amount"
+    v-show="showEdit"
+    @accept="accept"
+    @cancel="showEdit = false"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmits, toRefs } from 'vue'
+import { computed, defineProps, defineEmits, toRefs, ref, watch, reactive } from 'vue'
+import EditMove from './EditMove.vue'
+
+const showEdit = ref<boolean>(false)
 
 const props = defineProps({
   id: {
@@ -29,16 +45,36 @@ const props = defineProps({
   },
 })
 
-const { id, title, description, amount } = toRefs(props)
+const pasedProps = toRefs(props)
 
-const amountCurrency = computed(() => currencyFormatter.format(amount?.value ?? 0))
+const editedAmount = reactive({
+  title: pasedProps.title,
+  description: pasedProps.description,
+  amount: pasedProps.amount,
+})
 
-const isNegative = computed(() => (amount?.value ?? 0) < 0)
+const amountCurrency = computed(() => currencyFormatter.format(pasedProps.amount?.value ?? 0))
 
-const emit = defineEmits(['remove'])
+const isNegative = computed(() => (pasedProps.amount?.value ?? 0) < 0)
+
+const emit = defineEmits(['remove', 'edit'])
 
 const remove = () => {
-  emit('remove', id?.value)
+  emit('remove', pasedProps.id?.value)
+}
+
+const edit = () => {
+  console.log('edit en Movement', pasedProps.id?.value)
+  showEdit.value = !showEdit.value
+
+  if (!showEdit) {
+    emit('edit', pasedProps.id?.value)
+  }
+}
+
+const accept = () => {
+  console.log('accept edit')
+  showEdit.value = false
 }
 
 const currencyFormatter = new Intl.NumberFormat('es-PE', {
