@@ -1,9 +1,9 @@
 <template>
   <form class="movement">
     <div class="w-42 flex flex-col justify-between">
-      <input type="text" :value="title" class="rounded" />
+      <input type="text" v-model="editMovement.title" class="rounded" />
       <span class="h-4"></span>
-      <textarea rows="1" :value="description" class="rounded" />
+      <textarea rows="1" v-model="editMovement.description" class="rounded" />
     </div>
     <div class="action">
       <div class="flex flex-row justify-between w-16">
@@ -12,7 +12,7 @@
       </div>
       <input
         type="number"
-        :value="amount"
+        v-model="editMovement.amount"
         :class="[{ red: isNegative, green: !isNegative }]"
         class="rounded mt-3 w-[70%] inline-block"
       />
@@ -21,7 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs } from 'vue'
+import type { MovementType } from '@/common/model/movement.model'
+import type MovementClass from '@/common/model/movement.model'
+import { computed, onMounted, ref, toRefs } from 'vue'
 
 const props = defineProps<{
   title?: string
@@ -29,17 +31,29 @@ const props = defineProps<{
   amount?: number
 }>()
 
-const pasedProps = toRefs(props)
+const editMovement = ref<Omit<MovementType, 'id' | 'date'>>({
+  title: '',
+  description: '',
+  amount: 0,
+})
+const isNegative = computed(() => editMovement.value.amount < 0)
 
-const isNegative = computed(() => (pasedProps.amount?.value ?? 0) < 0)
+onMounted(() => {
+  editMovement!.value.title = props.title ?? ''
+  editMovement!.value.description = props.description ?? ''
+  editMovement!.value.amount = props.amount ?? 0
+})
 
 const emit = defineEmits(['accept', 'cancel'])
 
 const accept = () => {
-  emit('accept')
+  emit('accept', editMovement.value)
 }
 
 const cancel = () => {
+  editMovement!.value.title = props.title ?? ''
+  editMovement!.value.description = props.description ?? ''
+  editMovement!.value.amount = props.amount ?? 0
   emit('cancel')
 }
 </script>

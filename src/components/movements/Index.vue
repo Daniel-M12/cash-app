@@ -10,7 +10,7 @@
         :description="movement.description"
         :amount="movement.amount"
         @remove="remove"
-        @edit="edit"
+        @update="update"
       >
       </Movement>
     </div>
@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { toRefs, defineProps } from 'vue'
 import Movement from './Movement.vue'
-import MovementClass from '@/common/model/movement.model'
+import MovementClass, { type MovementType } from '@/common/model/movement.model'
 const props = defineProps({
   movements: {
     type: Array as () => MovementClass[],
@@ -30,16 +30,14 @@ const props = defineProps({
 
 const { movements } = toRefs(props)
 
-const emit = defineEmits(['remove', 'edit'])
+const emit = defineEmits(['remove', 'update'])
 
 const remove = (id: number) => {
-  console.log('Remove en Index')
   emit('remove', id)
 }
 
-const edit = (id: number) => {
-  console.log('Edit en Index')
-  emit('edit', id)
+const update = (updatedMovemet: Omit<MovementType, 'date'>) => {
+  emit('update', updatedMovemet)
 }
 </script>
 

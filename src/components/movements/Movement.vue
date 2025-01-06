@@ -19,14 +19,15 @@
     :description="props.description"
     :amount="props.amount"
     v-show="showEdit"
-    @accept="accept"
+    @accept="acceptEdit"
     @cancel="showEdit = false"
   />
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmits, toRefs, ref, watch, reactive } from 'vue'
+import { computed, defineProps, defineEmits, toRefs, ref } from 'vue'
 import EditMove from './EditMove.vue'
+import type { MovementType } from '@/common/model/movement.model'
 
 const showEdit = ref<boolean>(false)
 
@@ -47,34 +48,27 @@ const props = defineProps({
 
 const pasedProps = toRefs(props)
 
-const editedAmount = reactive({
-  title: pasedProps.title,
-  description: pasedProps.description,
-  amount: pasedProps.amount,
-})
-
 const amountCurrency = computed(() => currencyFormatter.format(pasedProps.amount?.value ?? 0))
 
 const isNegative = computed(() => (pasedProps.amount?.value ?? 0) < 0)
 
-const emit = defineEmits(['remove', 'edit'])
+const emit = defineEmits(['remove', 'update'])
 
 const remove = () => {
   emit('remove', pasedProps.id?.value)
 }
 
 const edit = () => {
-  console.log('edit en Movement', pasedProps.id?.value)
   showEdit.value = !showEdit.value
-
-  if (!showEdit) {
-    emit('edit', pasedProps.id?.value)
-  }
 }
 
-const accept = () => {
-  console.log('accept edit')
+const acceptEdit = (editMove: Omit<MovementType, 'id' | 'date'>) => {
   showEdit.value = false
+  const emitUpdatedMovement: Omit<MovementType, 'date'> = {
+    id: props.id!,
+    ...editMove,
+  }
+  emit('update', emitUpdatedMovement)
 }
 
 const currencyFormatter = new Intl.NumberFormat('es-PE', {

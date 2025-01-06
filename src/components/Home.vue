@@ -19,7 +19,7 @@
       </Resume>
     </template>
     <template #movements>
-      <Movements :movements="movements" @remove="remove" />
+      <Movements :movements="movements" @remove="remove" @update="update" />
     </template>
   </Layout>
 </template>
@@ -29,10 +29,11 @@ import Layout from './Layout.vue'
 import Header from './Header.vue'
 import Resume from './resume/Index.vue'
 import Movements from './movements/Index.vue'
-import type MovementClass from '@/common/model/movement.model'
+import MovementClass from '@/common/model/movement.model'
 import Action from './Action.vue'
 import Graphic from './resume/Graphic.vue'
 import { computed, onMounted, ref } from 'vue'
+import type { MovementType } from '@/common/model/movement.model'
 
 const label = ref<string | undefined>(undefined)
 const amount = ref<number | undefined>(undefined)
@@ -98,5 +99,17 @@ const remove = (id: number) => {
 
 const save = () => {
   localStorage.setItem('movements', JSON.stringify(movements.value))
+}
+
+const update = (updatedMovemet: Omit<MovementType, 'date'>) => {
+  const index = movements.value.findIndex((m) => m.id === updatedMovemet.id)
+  const update = ref<MovementClass>({
+    ...movements.value[index],
+    title: updatedMovemet.title,
+    description: updatedMovemet.description,
+    amount: updatedMovemet.amount,
+  })
+  movements.value[index] = update.value
+  save()
 }
 </script>
