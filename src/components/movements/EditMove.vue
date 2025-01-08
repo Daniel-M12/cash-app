@@ -22,8 +22,7 @@
 
 <script setup lang="ts">
 import type { MovementType } from '@/common/model/movement.model'
-import type MovementClass from '@/common/model/movement.model'
-import { computed, onMounted, ref, toRefs } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps<{
   title?: string

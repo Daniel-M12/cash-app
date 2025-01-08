@@ -9,7 +9,7 @@
         </div>
         <div class="field">
           <label>Monto</label>
-          <input type="number" v-model="amount" />
+          <input type="number" v-model="amount" step="0.01" />
         </div>
         <div class="field">
           <label>Descripción</label>
@@ -39,10 +39,10 @@ import type { Ref } from 'vue'
 import Modal from './Modal.vue'
 
 const showModal: Ref<boolean> = ref(false)
-const title = ref('')
-const amount = ref(0)
-const description = ref('')
-const movementType = ref('Ingreso')
+const title = ref<string>('')
+const amount = ref<number>(0.0)
+const description = ref<string>('')
+const movementType = ref<'Ingreso' | 'Gasto'>('Ingreso')
 
 const emit = defineEmits(['create'])
 
